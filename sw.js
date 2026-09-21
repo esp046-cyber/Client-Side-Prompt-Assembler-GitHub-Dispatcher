@@ -4,12 +4,12 @@ const CORE_ASSETS = [
   "./index.html",
   "./app.js",
   "./manifest.json",
-  "./favicon.svg",
-  "./favicon.ico",
-  "./apple-touch-icon.png",
-  "./icon-192.png",
-  "./icon-512.png",
-  "./icon-maskable-512.png"
+  "./public/favicon.svg",
+  "./public/favicon.ico",
+  "./public/apple-touch-icon.png",
+  "./public/icon-192.png",
+  "./public/icon-512.png",
+  "./public/icon-maskable-512.png"
 ];
 
 // Install: pre-cache the core app shell
