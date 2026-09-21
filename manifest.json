@@ -1,0 +1,25 @@
+{
+  "name": "SCADA PM Hub",
+  "short_name": "SCADA PM",
+  "description": "Client-side prompt assembler and GitHub issue dispatcher for SCADA project management.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='24' fill='%230f172a'/%3E%3Ctext x='96' y='128' font-size='110' text-anchor='middle'%3E%E2%9A%99%EF%B8%8F%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='64' fill='%230f172a'/%3E%3Ctext x='256' y='340' font-size='300' text-anchor='middle'%3E%E2%9A%99%EF%B8%8F%3C/text%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

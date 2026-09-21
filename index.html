@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>SCADA PM Hub</title>
+<meta name="theme-color" content="#0f172a" />
+<link rel="manifest" href="manifest.json" />
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚙️</text></svg>" />
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen">
+
+<div class="max-w-4xl mx-auto px-4 py-8 space-y-10">
+
+  <header class="space-y-1">
+    <h1 class="text-2xl md:text-3xl font-bold tracking-tight">SCADA PM Hub</h1>
+    <p class="text-slate-400 text-sm">Client-side prompt assembler &amp; GitHub issue dispatcher for SCADA project management.</p>
+  </header>
+
+  <!-- ===================== PROMPT ASSEMBLER ===================== -->
+  <section class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+    <div class="flex items-center gap-2">
+      <span class="text-xl">🧩</span>
+      <h2 class="text-lg font-semibold">Prompt Assembler</h2>
+    </div>
+    <p class="text-sm text-slate-400">Fill in the project context below, then generate a structured master prompt to paste into an AI chat to produce a Work Breakdown Structure (WBS).</p>
+
+    <div class="space-y-3">
+      <div>
+        <label for="clientScope" class="block text-sm font-medium text-slate-300 mb-1">Client Scope</label>
+        <textarea id="clientScope" rows="3" placeholder="e.g. Migrate legacy RSView32 HMI to Ignition, integrate 3 remote PLC-5 sites..."
+          class="w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+      </div>
+
+      <div>
+        <label for="hardwareConstraints" class="block text-sm font-medium text-slate-300 mb-1">Hardware / PLC Constraints</label>
+        <textarea id="hardwareConstraints" rows="3" placeholder="e.g. Allen-Bradley ControlLogix 5580, existing Ethernet/IP network, no downtime window on Line 2..."
+          class="w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+      </div>
+
+      <div>
+        <label for="availableResources" class="block text-sm font-medium text-slate-300 mb-1">Available Resources</label>
+        <textarea id="availableResources" rows="3" placeholder="e.g. 1 lead SCADA engineer, 1 field tech, 6-week timeline, spare I/O modules on hand..."
+          class="w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+      </div>
+    </div>
+
+    <button id="generatePromptBtn"
+      class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 transition-colors text-white font-medium px-4 py-2 rounded-lg text-sm">
+      Generate Master Prompt
+    </button>
+
+    <div id="promptPreviewWrap" class="hidden space-y-2 pt-2">
+      <label class="block text-sm font-medium text-slate-300">Generated Prompt (copied to clipboard)</label>
+      <textarea id="promptPreview" rows="8" readonly
+        class="w-full rounded-lg bg-slate-950 border border-slate-800 px-3 py-2 text-xs font-mono text-slate-300"></textarea>
+    </div>
+  </section>
+
+  <!-- ===================== GITHUB DISPATCHER ===================== -->
+  <section class="bg-slate-900 border border-slate-800 rounded-xl p-5 space-y-4">
+    <div class="flex items-center gap-2">
+      <span class="text-xl">🚀</span>
+      <h2 class="text-lg font-semibold">GitHub Dispatcher</h2>
+    </div>
+    <p class="text-sm text-slate-400">Paste the JSON array of tasks returned by the AI. Each task becomes a GitHub Issue in your repository.</p>
+
+    <div>
+      <label for="taskJson" class="block text-sm font-medium text-slate-300 mb-1">Task JSON Array</label>
+      <textarea id="taskJson" rows="8" placeholder='[{"title": "Configure PLC I/O mapping", "body": "Map digital/analog I/O per P&amp;ID rev C", "labels": ["hardware"]}, ...]'
+        class="w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+      <p class="text-xs text-slate-500 mt-1">Expected shape: array of objects with <code class="text-slate-400">title</code> (required), <code class="text-slate-400">body</code> (optional), <code class="text-slate-400">labels</code> (optional array of strings).</p>
+    </div>
+
+    <div class="grid sm:grid-cols-3 gap-3">
+      <div>
+        <label for="repoOwner" class="block text-sm font-medium text-slate-300 mb-1">Repo Owner</label>
+        <input id="repoOwner" type="text" placeholder="your-username"
+          class="w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+      </div>
+      <div>
+        <label for="repoName" class="block text-sm font-medium text-slate-300 mb-1">Repo Name</label>
+        <input id="repoName" type="text" placeholder="scada-pm-hub"
+          class="w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+      </div>
+      <div>
+        <label for="ghToken" class="block text-sm font-medium text-slate-300 mb-1">GitHub PAT</label>
+        <input id="ghToken" type="password" placeholder="ghp_..." autocomplete="off"
+          class="w-full rounded-lg bg-slate-800 border border-slate-700 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+      </div>
+    </div>
+
+    <label class="flex items-center gap-2 text-xs text-slate-400">
+      <input id="rememberToken" type="checkbox" class="rounded bg-slate-800 border-slate-700" />
+      Remember these settings on this device (stored only in this browser's local storage)
+    </label>
+
+    <button id="dispatchBtn"
+      class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 disabled:bg-slate-700 disabled:cursor-not-allowed transition-colors text-white font-medium px-4 py-2 rounded-lg text-sm">
+      <span id="dispatchBtnLabel">Dispatch to GitHub</span>
+      <svg id="dispatchSpinner" class="hidden animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+      </svg>
+    </button>
+
+    <div id="statusLog" class="hidden space-y-1 text-xs font-mono bg-slate-950 border border-slate-800 rounded-lg p-3 max-h-56 overflow-y-auto"></div>
+  </section>
+
+  <footer class="text-center text-xs text-slate-600 pt-4">
+    Runs 100% client-side. Your PAT never leaves this browser except to call the GitHub API directly.
+  </footer>
+</div>
+
+<script type="module" src="app.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('sw.js').catch(err => console.warn('SW registration failed:', err));
+    });
+  }
+</script>
+</body>
+</html>
